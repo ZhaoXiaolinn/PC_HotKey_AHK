@@ -169,48 +169,41 @@ Msgbox "A"
 ;Run WinCtl.exe UnHide,,Hide
 return
 
+
+AppsKey_State := 0
+AppsKey_Shift_State := 0
 RAlt::
-send {AppsKey}
-
-;<短时间双击alt键切换capslock键> 
-;~ 设置一个时钟，比如400 毫秒， 
-;~ 设置一个计数器，Alt_presses，按击次数，每次响应时钟把计数器清0复位 
-#Persistent 
-$Alt:: 
-if Alt_presses > 0 ; SetTimer 已经启动，所以我们记录按键。 
-{ 
-Alt_presses += 1 
-return 
-} 
-;否则，这是新一系列按键的首次按键。将计数设为 1 并启动定时器： 
-Alt_presses = 1 
-SetTimer, KeyAlt, 200 ;在 300 毫秒内等待更多的按键。 
+if AppsKey_State
+{
+	send {esc}
+	AppsKey_State := 0
+	AppsKey_Shift_State := 0
+}
+else
+{
+	send {AppsKey}
+	AppsKey_State := 1
+}
 return 
 
-KeyAlt: 
-SetTimer, KeyAlt, off 
-if Alt_presses = 1 ;该键已按过一次。 
-{ 
-	Gosub Alt_singleClick 
-} 
-else if Alt_presses = 2 ;该键已按过两次。 
-{ 
-	Gosub Alt_doubleClick 
-} 
-;不论上面哪个动作被触发，将计数复位以备下一系列的按键： 
-Alt_presses = 0 
++RAlt:: 
+if AppsKey_Shift_State
+{
+	send {esc}
+}
+else
+{
+	send {ShiftDown}{AppsKey}{ShiftUp}
+	AppsKey_Shift_State := 1
+	AppsKey_State := 1
+}
 return 
 
-Alt_singleClick: 
-	send {alt} 
-return 
+LAlt & Tab:: AltTab	
+;+LAlt & Tab:: ShiftAltTab
 
-Alt_doubleClick: 
-if GetKeyState("Capslock", "T") 
-	SetCapsLockState,off 
-else 
-	SetCapsLockState,on 
-return 
+
+
 
 
 #Persistent 
@@ -246,37 +239,6 @@ Esc_doubleClick:
 return
 
 
-#Persistent 
-$F1:: 
-if F1_presses > 0 
-{ 
-F1_presses += 1 
-return 
-} 
-F1_presses = 1 
-SetTimer, KeyF1, 250 
-return 
-
-KeyF1: 
-SetTimer, KeyF1, off 
-if F1_presses = 1 
-{
-	Gosub F1_singleClick 
-} 
-else if F1_presses = 2 
-{ 
-	Gosub F1_doubleClick 
-} 
-F1_presses = 0 
-return 
-
-F1_singleClick: 
-	send {F1} 
-return 
-
-F1_doubleClick: 
-	Send {Volume_Mute} 
-return  
 /************Esc DoubleClick****************
 */
 /*
@@ -305,10 +267,22 @@ return
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;实用功能;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 ;win键 + PrintScreen键关闭屏幕 
+Screen_State := 1
 #PrintScreen:: 
-	KeyWait PrintScreen 
-	KeyWait LWin ;释放左Win键才激活下面的命令 
-	SendMessage,0x112,0xF170,2,,Program Manager 
+	
+	if Screen_State 
+	{
+		KeyWait PrintScreen 
+		KeyWait LWin ;释放左Win键才激活下面的命令
+		SendMessage,0x112,0xF170,2,,Program Manager 
+		Screen_State := 0
+	}
+	else
+	{
+		SendMessage,0x112,0xF170,-1,,Program Manager 
+		Screen_State := 1
+	}
+
 	;关闭显示器。0x112:WM_SYSCOMMAND，0xF170:SC_MONITORPOWER。2：关闭，-1：开启显示器 
 	Return 
 
@@ -428,6 +402,7 @@ $Media_Play_Pause::
 QQ Shortcut
 *****************************************
 */
+/*
 ~$^!M::
 IfWinExist ahk_class TXGuiFoundation
 {
@@ -448,6 +423,7 @@ else
 	WinActivate
 }
 Return
+*/
 
 /*
 *******************************
