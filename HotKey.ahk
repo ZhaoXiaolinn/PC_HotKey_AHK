@@ -65,12 +65,12 @@ return
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;通用键的映射;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; 
 
 ;对windows下的一些常用键进行映射,与苹果下的一些习惯一样(苹果下的快捷键有些非常合理:) 
-!f::Send ^f ;查找 
-!q:: !F4 ;退出 
-!w::Send ^w ;关闭网页窗口 
-!s::Send ^s ;保存 
-!n::Send ^n ;新建 
-!z::Send ^z 
+;!f::Send ^f ;查找 
+;!q:: !F4 ;退出 
+;!w::Send ^w ;关闭网页窗口 
+;!s::Send ^s ;保存 
+;!n::Send ^n ;新建 
+;!z::Send ^z 
 ;选择文字 
 !,::Send ^+{Left} 
 !.::Send ^+{Right} 
@@ -206,37 +206,6 @@ LAlt & Tab:: AltTab
 
 
 
-#Persistent 
-$Esc:: 
-if Esc_presses > 0 
-{ 
-Esc_presses += 1 
-return 
-} 
-Esc_presses = 1 
-SetTimer, KeyEsc, 200 
-return 
-
-KeyEsc: 
-SetTimer, KeyEsc, off 
-if Esc_presses = 1 
-{
-	Gosub Esc_singleClick 
-} 
-else if Esc_presses = 2 
-{ 
-	Gosub Esc_doubleClick 
-} 
-Esc_presses = 0 
-return 
-
-Esc_singleClick: 
-	send {esc} 
-return 
-
-Esc_doubleClick: 
-	Send {AltDown}{F4}{AltUp}
-return
 
 
 /************Esc DoubleClick****************
