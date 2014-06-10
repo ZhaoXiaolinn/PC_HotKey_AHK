@@ -3,6 +3,9 @@
 #SingleInstance force
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
 
+#include brightness.ahk
+
+
 ;Change the script's thread run priority
 Process Priority, , High
 SetKeyDelay -1
@@ -34,15 +37,6 @@ else Vim_Path = %Vim_Path%gvim.exe
 ;;;;;;;;;;;;;;;;;;;;;;;;;Read End	;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
-/*
-$F10::
-	SetTitleMatchMode 2
-	IfWinExist ahk_class SciTEWindow
-	{
-		ControlSend, ahk_parent,f10; 暂停/开始
-	}
-	return
-*/
 
 ::/ishare::ishare.iask.sina.com.cn{enter}
 
@@ -210,6 +204,250 @@ LAlt & Tab:: AltTab
 
 /************Esc DoubleClick****************
 */
+
+
+;------------------------------------------------------
+;  Esc DoubleClick to Close Windows
+;------------------------------------------------------
+~Esc::
+Keywait, Escape, , t0.5
+if errorlevel = 1
+	return
+else
+	Keywait, Escape, d, t0.1
+if errorlevel = 0
+{
+	WinGetActiveTitle, Title
+	WinClose, %Title%
+	return
+}
+return
+
+;------------------------------------------------------
+;  F1 DoubleClick to Toogle Volumn "Mute" 
+;------------------------------------------------------
+$F1::
+Keywait, F1, , t0.5
+if errorlevel = 1
+{
+	return
+}
+else
+	Keywait, F1, d, t0.1
+if errorlevel = 0
+{
+	SoundSet, +1, ,mute
+}
+else
+{
+	Send {F1}
+	return
+}
+return
+
+
+;------------------------------------------------------
+;  F2 DoubleClick to Volumn Down 5
+;  F2 Pressed Continue to Volumn down 1 per 50ms
+;------------------------------------------------------
+$F2::
+Keywait, F2, , t0.5
+if errorlevel = 1
+{
+	while(GetKeyState( "F2", "P"))
+	{
+		Send {Volume_Down 1}
+		sleep 50
+	}
+	return
+}
+else
+	Keywait, F2, d, t0.1
+if errorlevel = 0
+{
+	Send {Volume_Down 5}
+}
+else
+{
+	Send {F2}
+	return
+}
+return
+
+
+;------------------------------------------------------
+;  F3 DoubleClick to Volumn Up 5
+;  F3 Pressed Continue to Volumn Up 1 per 50ms
+;------------------------------------------------------
+$F3::
+Keywait, F3, , t0.5
+if errorlevel = 1
+{
+	while(GetKeyState( "F3", "P"))
+	{
+		Send {Volume_Up 1}
+		sleep 50
+	}
+	return
+}
+else
+	Keywait, F3, d, t0.1
+if errorlevel = 0
+{
+	Send {Volume_Up 5}
+}
+else
+{
+	Send {F3}
+	return
+}
+return
+
+;------------------------------------------------------
+;  F7 DoubleClick to Brightness Down 1
+;  F7 Pressed Continue to Brightness Down 1 per 50ms
+;------------------------------------------------------
+$F7::
+Keywait, F7, , t0.1
+if errorlevel = 1
+{
+	while(GetKeyState( "F7", "P"))
+	{
+		MoveBrightness(-1)
+		sleep 50
+	}
+	return
+}
+else
+	Keywait, F7, d, t0.1
+if errorlevel = 0
+{
+	MoveBrightness(-1)
+}
+else
+{
+	Send {F7}
+	return
+}
+return
+
+
+;------------------------------------------------------
+;  F8 DoubleClick to Brightness Up 1
+;  F8 Pressed Continue to Brightness Up 1 per 50ms
+;------------------------------------------------------
+$F8::
+Keywait, F8, , t0.5
+if errorlevel = 1
+{
+	while(GetKeyState( "F8", "P"))
+	{
+		MoveBrightness(1)
+		sleep 50
+	}
+	return
+}
+else
+	Keywait, F8, d, t0.1
+if errorlevel = 0
+{
+	MoveBrightness(1)
+}
+else
+{
+	Send {F8}
+	return
+}
+return
+
+
+
+;------------------------------------------------------
+;  F10 DoubleClick to Brightness Up 1
+;  F10 Pressed Continue to Brightness Up 1 per 50ms
+;------------------------------------------------------
+$F10::
+Keywait, F10, , t0.5
+if errorlevel = 1
+{
+	while(GetKeyState( "F10", "P"))
+	{
+		Send {Media_Prev}	
+		sleep 50
+	}
+	return
+}
+else
+	Keywait, F10, d, t0.1
+if errorlevel = 0
+{
+	Send {Media_Prev}
+}
+else
+{
+	Send {F10}
+	return
+}
+return
+
+;------------------------------------------------------
+;  F11 DoubleClick to Brightness Up 1
+;  F11 Pressed Continue to Brightness Up 1 per 50ms
+;------------------------------------------------------
+$F11::
+Keywait, F11, , t0.5
+if errorlevel = 1
+{
+	while(GetKeyState( "F11", "P"))
+	{
+		Send {Media_Play_Pause}
+		sleep 50
+	}
+	return
+}
+else
+	Keywait, F11, d, t0.1
+if errorlevel = 0
+{
+	Send {Media_Play_Pause}
+}
+else
+{
+	Send {F11}
+	return
+}
+return
+
+
+;------------------------------------------------------
+;  F9 DoubleClick to Brightness Up 1
+;  F9 Pressed Continue to Brightness Up 1 per 50ms
+;------------------------------------------------------
+$F12::
+Keywait, F12, , t0.5
+if errorlevel = 1
+{
+	while(GetKeyState( "F12", "P"))
+	{
+		Send {Media_Next}
+		sleep 50
+	}
+	return
+}
+else
+	Keywait, F12, d, t0.1
+if errorlevel = 0
+{
+	Send {Media_Next}
+}
+else
+{
+	Send {F12}
+	return
+}
+return
+
+
 /*
 ;copy cut paste 的快捷键 
 !c::Send ^c 
