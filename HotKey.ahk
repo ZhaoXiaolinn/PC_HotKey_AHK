@@ -2,6 +2,7 @@
 ;#Warn  ; Enable warnings to assist with detecting common errors.
 #SingleInstance force
 SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
+SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
 
 #include brightness.ahk
 
@@ -14,7 +15,7 @@ Tuan_Spec:
 GroupAdd, VIMG, ahk_class Vim
 iniPath = Settings.ini
 ;;;;;;;;;;;;;;;;;;;;;;;;;Read APP Path	;;;;;;;;;;;;;;;;;;;;;;;;;
-vim_path = D:\Think\AppSys\Vim\vim74\gvim.exe
+vim_path :="D:\Think\Vim\vim74\gvim.exe"
 vim_extList = "ahk py txt md "
 
 
@@ -24,14 +25,14 @@ if ERRORLEVEL
 	QQ_Path = ""
 }
 else QQ_Path = %QQ_Path%QQProtect\Bin\QQProtect.exe
-
+/*
 RegRead Vim_Path,HKEY_LOCAL_MACHINE,SOFTWARE\Classes\Wow6432Node\TypeLib\{AC726707-2977-11D1-B2F3-006008040780}\1.0\HELPDIR
 if ERRORLEVEL
 {
 	Vim_Path = ""
 }
 else Vim_Path = %Vim_Path%gvim.exe
-
+*/
 ;;; Can't read
 ;;;RegRead ,HKLM, SOFTWARE\Vim\GVim, path
 ;;;;;;;;;;;;;;;;;;;;;;;;;Read End	;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -40,7 +41,7 @@ else Vim_Path = %Vim_Path%gvim.exe
 
 ::/ishare::ishare.iask.sina.com.cn{enter}
 
-#f::run "E:\ASYNC\TOOL\Everything.exe"
+#f::run ""D:\PApp\ALTRun\Everything\Everything-1.3.4.662b.x64.exe""
 ::/btw::By the way
 
 ;;;;;;;;;;快速打开程序(快捷键);;;;;;;;;;;;;;;;;;;;;;;;; 
@@ -82,7 +83,7 @@ return
 
 ;鼠标的左右键实现任务切换,对thinkpad trackpoint 特别有用 
 ~LButton & RButton::AltTab 
-~RButton & LButton::ShiftAltTab
+;RButton & LButton::ShiftAltTab
 
 ;!A::WinHide ahk_class Shell_TrayWnd
 ;!Q::WinShow ahk_class Shell_TrayWnd
@@ -193,7 +194,7 @@ else
 }
 return 
 
-LAlt & Tab:: AltTab	
+;LAlt & Tab:: AltTab	
 ;+LAlt & Tab:: ShiftAltTab
 
 
@@ -265,7 +266,7 @@ else
 	Keywait, F2, d, t0.1
 if errorlevel = 0
 {
-	Send {Volume_Down 5}
+	Send {Volume_Down 3}
 }
 else
 {
@@ -294,7 +295,7 @@ else
 	Keywait, F3, d, t0.1
 if errorlevel = 0
 {
-	Send {Volume_Up 5}
+	Send {Volume_Up 3}
 }
 else
 {
